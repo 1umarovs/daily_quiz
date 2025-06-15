@@ -1,0 +1,123 @@
+body {
+    background-color: #000;
+    color: #fff;
+    font-family: 'Roboto', Arial, sans-serif;
+    text-align: center;
+    padding: 50px 20px;
+    margin: 0;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+
+.icons img {
+    width: 60px;
+    margin: 10px;
+    cursor: pointer;
+    transition: transform 0.3s ease, filter 0.3s ease;
+    border-radius: 12px;
+}
+
+.icons img:hover {
+    transform: scale(1.1);
+    filter: brightness(1.2);
+}
+
+.question-box {
+    margin: 30px auto;
+    width: 80%;
+    max-width: 700px;
+    border: 1px solid #fff;
+    padding: 25px;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.05);
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+button {
+    padding: 12px 30px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #fff;
+    color: #000;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #ddd;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 99;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    color: black;
+    padding: 25px;
+    border-radius: 10px;
+    min-width: 300px;
+    max-width: 500px;
+    text-align: left;
+    font-size: 1rem;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+footer {
+    margin-top: 60px;
+    font-size: 0.9rem;
+    color: #888;
+}
+
+footer a img {
+width: 36px;
+margin: 0 10px;
+transition: transform 0.3s ease, filter 0.3s ease;
+animation: pulseIcon 4s infinite;
+}
+
+footer a img:hover {
+transform: scale(1.2);
+filter: brightness(1.5);
+}
+
+@media (max-width: 480px) {
+    .icons {
+        gap: 10px;
+    }
+
+    .icons img {
+        width: 40px;
+        border-radius: 12px;
+    }
+
+    .question-box {
+        padding: 15px;
+    }
+
+    .modal-content {
+        padding: 20px;
+    }
+}
+
+
+

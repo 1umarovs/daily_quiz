@@ -1,0 +1,146 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="PREP — JavaScript, HTML, CSS, Python va Django bo'yicha interaktiv savollar platformasi." />
+    <meta name="keywords" content="PREP, dasturlash savollari, JavaScript, HTML, CSS, Python, Django" />
+    <meta name="author" content="DevClub" />
+    <title>Daily Quiz</title>
+    <link rel="icon" href="{% static 'media/github.png' %}" type="image/x-icon" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+</head>
+
+
+
+<body>
+
+    <div class="modal" id="modal" role="dialog" aria-modal="true">
+        <div class="modal-content" id="modal-content"></div>
+    </div>
+    
+
+
+    <main>
+        <header>
+            <h1>Daily Quiz — Dasturlash Savollari</h1>
+            <p>Quyidagi texnologiyalardan birini tanlang va savolga javob bering:</p>
+        </header>
+    
+        <section class="icons" aria-label="Texnologiyalar ikonkalari">
+            {% for category in categories %}
+            <a href="javascript:void(0);" onclick="loadQuestion('{{ category.slug }}')">
+                <img src="{{ category.img.url }}" alt="{{ category.category }}" />
+            </a>
+            {% endfor %}
+        </section>
+    
+        <section class="question-box" id="question-box" aria-live="polite">
+            Savol bu yerda.
+        </section>
+
+
+        
+    </main>
+
+    <footer>
+        <a href="https://t.me/umarovs_portfolio_17" target="_blank"><img src="{% static 'media/telegram.png' %}" alt="Telegram"></a>
+        <a href="https://github.com/1umarovs" target="_blank"><img src="{% static 'media/github.png' %}" alt="Github"></a>
+        <p>&copy; 2025 PREP.uz by <a href="https://t.me/Umarovs7" target="_blank" style="color: #fff;">Umarovs</a> created with Abdurakhmon Rashidov</p>
+    </footer>
+
+    <script src="{% static 'js/main.js' %}"></script>
+
+    <script>
+        let currentSlug = null;
+
+        function loadQuestion(slug) {
+            fetch(`/get-question/${slug}/`)
+            .then(response => response.json())
+            .then(data => {
+                const box = document.getElementById('question-box');
+
+                if (data.error && data.already_answered && currentSlug === slug) {
+                showLimitMessage(box, data);
+                return;
+                }
+
+                if (!data.already_answered || currentSlug !== slug) {
+                box.innerHTML = '';
+
+                let html = `<p>${data.question}</p>
+                        <button onclick="showAnswer('${data.answer}')">Javobni ko‘rish</button>`;
+                box.innerHTML = html;
+                currentSlug = slug;
+                }
+
+                if (data.already_answered && currentSlug === slug) {
+                showLimitMessage(box, data);
+                }
+            });
+        }
+    
+        function showLimitMessage(box, data) {
+            const oldMsg = document.getElementById('limit-message');
+            if (oldMsg) oldMsg.remove();
+    
+            const messageBox = document.createElement('div');
+            messageBox.id = 'limit-message';
+            messageBox.style.color = 'red';
+            messageBox.style.marginTop = '5px';
+    
+            const time = formatTime(data.seconds_left);
+    
+            messageBox.innerHTML = `
+                <p>${data.error}</p>
+                <p>Yangi savol uchun qolgan vaqt: <strong>${time}</strong></p>
+            `;
+    
+            box.appendChild(messageBox);
+    
+            setTimeout(() => {
+                const msg = document.getElementById('limit-message');
+                if (msg) msg.remove();
+            }, 8000);
+        }
+    
+        function formatTime(seconds) {
+            const h = Math.floor(seconds / 3600).toString().padStart(2, '0');
+            const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
+            const s = (seconds % 60).toString().padStart(2, '0');
+            return `${h} soat ${m} minut `;
+        }
+    
+        function showAnswer(answer) {
+            const modal = document.getElementById('modal');
+            const modalContent = document.getElementById('modal-content');
+    
+            modalContent.innerHTML = `
+                <button class="close-btn" id="close-btn">&times;</button>
+                <p>${answer}</p>
+            `;
+    
+            modal.style.display = 'flex';
+    
+            document.getElementById('close-btn').addEventListener('click', function () {
+                modal.style.display = 'none';
+            });
+        }
+    
+        window.onclick = function(event) {
+            const modal = document.getElementById('modal');
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        };
+    </script>
+    
+</body>
+
+</html>
