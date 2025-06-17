@@ -139,20 +139,20 @@ sample_questions = [
 
 
 
-def insert_sample_questions(request):
-    try:
-        category, created = Category.objects.get_or_create(
-            slug="cpp",  # slug URL uchun
-            defaults={"category": "Cpp", "img": "categories/default.jpg"}  # img sozlanmasa default rasm
-        )
-        for item in sample_questions:
-            Question.objects.get_or_create(
-                category=category,
-                question=item["question"],
-                answer=item["answer"]
-            )
+# def insert_sample_questions(request):
+#     try:
+#         category, created = Category.objects.get_or_create(
+#             slug="cpp",  # slug URL uchun
+#             defaults={"category": "Cpp", "img": "categories/default.jpg"}  # img sozlanmasa default rasm
+#         )
+#         for item in sample_questions:
+#             Question.objects.get_or_create(
+#                 category=category,
+#                 question=item["question"],
+#                 answer=item["answer"]
+#             )
 
-        return HttpResponse("Savollar muvaffaqiyatli bazaga qo‘shildi!")
+#         return HttpResponse("Savollar muvaffaqiyatli bazaga qo‘shildi!")
 
-    except Exception as e:
-        return HttpResponse(f"Xatolik: {str(e)}")
+#     except Exception as e:
+#         return HttpResponse(f"Xatolik: {str(e)}")
